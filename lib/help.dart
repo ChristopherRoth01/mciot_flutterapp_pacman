@@ -45,12 +45,25 @@ class HelpScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Expanded(
+            const Expanded(
                 child:Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.0),
                   child: Text("This is the heading, and it's so long, it's going out of the boundaries if flutter makes now brake."),
                 ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ElevatedButton(onPressed: () {
+                  Navigator.pop(context);
+                }, child:
+                const Icon(
+                  Icons.arrow_back,
+                  color: Colors.yellow,
+                ),
+                ),
+              ],
+            )
           ],
         )
         ),

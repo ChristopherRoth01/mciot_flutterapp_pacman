@@ -13,17 +13,15 @@ class EntryScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Expanded(child: Help()),
-            const Expanded(
+            Expanded(
+                child: const Help(),
+            ),
+            Expanded(
               flex: 4,
               child: Center(
                 child: Text(
                   gameName_caps,
-                  style: TextStyle(
-                    color: Colors.yellow,
-                    fontSize: 70,
-                    fontFamily: 'Crack Man',
-                  ),
+                  style: Theme.of(context).textTheme.headline1,
                 ),
               ),
             ),
@@ -48,14 +46,10 @@ class EntryScreen extends StatelessWidget {
                       ),
                     ),
 
-                    child: const Center(
+                    child: Center(
                       child: Text(
                         "Start",
-                        style: TextStyle(
-                          fontFamily: 'Crack Man',
-                          fontSize: 30,
-                          color: Colors.yellow,
-                        ),
+                        style: Theme.of(context).textTheme.headline3,
                       ),
                     ),
                   ),

@@ -12,36 +12,28 @@ void main() {
         scaffoldBackgroundColor: const Color(0xFF0A0E21),
         textTheme: const TextTheme (
             headline1: TextStyle(
-              color: Colors.white,
+              color: Colors.yellow,
+              fontSize: 70,
+              fontFamily: 'Crack Man',
             ),
             headline2: TextStyle(
-              color: Colors.white,
+              color: Colors.yellow,
+              fontSize: 50,
+              fontFamily: 'Crack Man',
             ),
             headline3: TextStyle(
-              color: Colors.white,
-            ),
-            headline4: TextStyle(
-              color: Colors.white,
-            ),
-            headline5: TextStyle(
-              color: Colors.white,
-            ),
-            headline6: TextStyle(
-              color: Colors.white,
+              color: Colors.yellow,
+              fontSize: 40,
+              fontFamily: 'Crack Man',
             ),
             bodyText1: TextStyle(
               color: Colors.white,
+              fontSize: 20,
             ),
             bodyText2: TextStyle(
               color: Colors.white,
             ),
           caption: TextStyle(
-            color: Colors.white,
-          ),
-          button: TextStyle(
-            color: Colors.white,
-          ),
-          overline: TextStyle(
             color: Colors.white,
           ),
         )
