@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mciot_flutterapp_pacman/game/score.dart';
-
+import 'package:mciot_flutterapp_pacman/game/map.dart';
 import 'components/pacman.dart';
 
 class Game extends StatefulWidget {
@@ -18,7 +18,10 @@ class _GameState extends State<Game> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-              flex: 4,child: Center(child: PacMan()),
+              flex: 4,child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Center(child: Map()),
+              ),
           ),
           Expanded(child: Score()),
         ],
