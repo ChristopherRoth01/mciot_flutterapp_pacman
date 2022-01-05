@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mciot_flutterapp_pacman/constants.dart';
 
 class Help extends StatelessWidget {
   const Help({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class Help extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(iconPadding),
           child: ElevatedButton(
             onPressed:() {
               Navigator.push(context,

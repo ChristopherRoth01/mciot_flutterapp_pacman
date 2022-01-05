@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mciot_flutterapp_pacman/game/score.dart';
 
+import 'components/pacman.dart';
+
 class Game extends StatefulWidget {
   const Game({Key? key}) : super(key: key);
 
@@ -16,7 +18,8 @@ class _GameState extends State<Game> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
-              flex: 4,child: Center(child: Text("HI!"))),
+              flex: 4,child: Center(child: PacMan()),
+          ),
           Expanded(child: Score()),
         ],
       ),

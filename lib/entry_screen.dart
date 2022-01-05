@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mciot_flutterapp_pacman/constants.dart';
+import 'package:mciot_flutterapp_pacman/settings.dart';
 import 'game/game.dart';
 import 'help.dart';
 
@@ -14,7 +15,13 @@ class EntryScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-                child: const Help(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Settings(),
+                  const Help(),
+                ],
+              ),
             ),
             Expanded(
               flex: 4,
@@ -30,9 +37,9 @@ class EntryScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) {return const Game();}
-                  ),
+                    MaterialPageRoute(builder: (context) {
+                      return const Game();
+                    }),
                   );
                 },
                 child: Padding(
@@ -45,7 +52,6 @@ class EntryScreen extends StatelessWidget {
                         width: 5.0,
                       ),
                     ),
-
                     child: Center(
                       child: Text(
                         "Start",
@@ -58,8 +64,7 @@ class EntryScreen extends StatelessWidget {
             ),
             const Expanded(
               flex: 1,
-                child: SizedBox(
-            ),
+              child: SizedBox(),
             ),
           ],
         ),
