@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mciot_flutterapp_pacman/constants.dart';
+import 'game/game.dart';
+import 'help.dart';
 
 class EntryScreen extends StatelessWidget {
   const EntryScreen({Key? key}) : super(key: key);
@@ -10,11 +13,12 @@ class EntryScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Expanded(child: Help()),
             const Expanded(
               flex: 4,
               child: Center(
                 child: Text(
-                  "PACMAN",
+                  gameName_caps,
                   style: TextStyle(
                     color: Colors.yellow,
                     fontSize: 70,
@@ -25,7 +29,14 @@ class EntryScreen extends StatelessWidget {
             ),
             Expanded(
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {return const Game();}
+                  ),
+                  );
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Container(
@@ -37,7 +48,7 @@ class EntryScreen extends StatelessWidget {
                       ),
                     ),
 
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Start",
                         style: TextStyle(
