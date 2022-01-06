@@ -44,13 +44,14 @@ class HelpScreen extends StatelessWidget {
             ),
           ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Expanded(
-                child:Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("This is the heading, and it's so long, it's going out of the boundaries if flutter makes now brake."),
-                ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 50, 0, 0),
+                child: Text(
+                  "Help", style: Theme.of(context).textTheme.headline3,),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,

@@ -29,6 +29,8 @@ void main() {
             bodyText1: TextStyle(
               color: Colors.yellow,
               fontSize: 20,
+              fontFamily: 'Pac Man',
+              fontWeight: FontWeight.w200,
             ),
             bodyText2: TextStyle(
               color: Colors.white,

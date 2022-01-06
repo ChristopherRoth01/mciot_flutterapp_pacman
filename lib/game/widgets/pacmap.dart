@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:mciot_flutterapp_pacman/game/components/ghost.dart';
 import 'package:mciot_flutterapp_pacman/game/end_screen.dart';
 import 'package:mciot_flutterapp_pacman/game/logic/player.dart';
 import 'package:mciot_flutterapp_pacman/game/logic/map_options.dart';
 import 'package:mciot_flutterapp_pacman/game/logic/position.dart';
-import 'package:mciot_flutterapp_pacman/game/widgets/score.dart';
 
 import '../../settings.dart';
 import '../logic/direction.dart';
@@ -12,32 +12,35 @@ import '../logic/direction.dart';
 class PacMap extends StatefulWidget {
   PacMap({Key? key}) : super(key: key);
   MapOptions options = MapOptions.smallMap_options;
-
   @override
   _MapState createState() => _MapState();
 }
 
 class _MapState extends State<PacMap> {
   Player player = Player(pos: Position(x: 5, y: 5));
+  Map<Position, Ghost> ghosts = {Position(x: 1, y: 1): Ghost()};
   Direction _direction = Direction.RIGHT;
   bool gameRunning = true;
   int score = 0;
-
+  bool _pacVisible = false;
   final Map<int, bool> _visible = {};
 
-
   void checkForEatableFood() {
-    if(_visible[player.pos.y * Settings.currentlySelectedMap.crossAxisCount + player.pos.x] == true) {
+    if (_visible[player.pos.y * Settings.currentlySelectedMap.crossAxisCount +
+            player.pos.x] ==
+        true) {
       setState(() {
-        _visible[player.pos.y * Settings.currentlySelectedMap.crossAxisCount + player.pos.x] = false;
+        _visible[player.pos.y * Settings.currentlySelectedMap.crossAxisCount +
+            player.pos.x] = false;
         score++;
       });
     }
   }
+
   void start() {
     setFoodVisible();
     Timer.periodic(const Duration(milliseconds: 150), (timer) {
-      if(!gameRunning) {
+      if (!gameRunning) {
         timer.cancel();
       }
       setState(() {
@@ -51,7 +54,7 @@ class _MapState extends State<PacMap> {
           player.moveUp();
         }
         checkForEatableFood();
-        if(score == Settings.currentlySelectedMap.getFoodNumber()) {
+        if (score == Settings.currentlySelectedMap.getFoodNumber()) {
           timer.cancel();
           Navigator.pushReplacement(
             context,
@@ -62,22 +65,21 @@ class _MapState extends State<PacMap> {
         }
       });
     });
-    if(score == Settings.currentlySelectedMap.getFoodNumber()) {
-      goToEndScreen();
-
+    if (score == Settings.currentlySelectedMap.getFoodNumber()) {
+      goToEndScreen(true);
     }
   }
 
   void end() {
     gameRunning = false;
-    goToEndScreen();
+    goToEndScreen(false);
   }
 
-  void goToEndScreen() {
+  void goToEndScreen(bool won) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) {
-        return ScoreScreen(score: score, won: true);
+        return ScoreScreen(score: score, won: won);
       }),
     );
   }
@@ -120,14 +122,23 @@ class _MapState extends State<PacMap> {
                   if (player.pos.y * widget.options.crossAxisCount +
                           player.pos.x ==
                       index) {
-                    return Transform.rotate(
-                      angle: _direction.getAngle(),
-                      child: player.getWidget(),
-                    );
+                    return Visibility(
+                        visible: _pacVisible,
+                        child: Transform.rotate(
+                          angle: _direction.getAngle(),
+                          child: player.getWidget(),
+                        ));
+                  } else if (ghosts.keys.first.y *
+                              widget.options.crossAxisCount +
+                          ghosts.keys.first.x ==
+                      index) {
+                    return Visibility(
+                        child: Ghost(),
+                    visible: _pacVisible,);
                   }
                   return Visibility(
-                      visible: _visible[index] ?? false,
-                      child: widget.options.getElementWithIndex(index),
+                    visible: _visible[index] ?? false,
+                    child: widget.options.getElementWithIndex(index),
                   );
                 },
               ),
@@ -141,31 +152,58 @@ class _MapState extends State<PacMap> {
               Center(
                 child: TextButton(
                   onPressed: start,
-                  child: Text(
-                    "Start!",
-                    style: Theme.of(context).textTheme.bodyText1,
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        "Start",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.yellow, width: 4),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
               Center(
                 child: TextButton(
                   onPressed: end,
-                  child: Text(
-                    "End!",
-                    style: Theme.of(context).textTheme.bodyText1,
+                  child: Container(
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        "End",
+                        style: Theme.of(context).textTheme.bodyText1,
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.yellow, width: 4),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
             ],
           ),
         ),
-        Expanded(child: Text("Score: $score", style: Theme.of(context).textTheme.headline3,)),
+        Expanded(
+            child: Text(
+          "Score: $score",
+          style: Theme.of(context).textTheme.headline3,
+        )),
       ],
     );
   }
 
   void setFoodVisible() {
-    for(int i = 0; i < Settings.currentlySelectedMap.crossAxisCount * Settings.currentlySelectedMap.mainAxisCount; i++) {
+    _pacVisible = true;
+    for (int i = 0;
+        i <
+            Settings.currentlySelectedMap.crossAxisCount *
+                Settings.currentlySelectedMap.mainAxisCount;
+        i++) {
       _visible[i] = true;
     }
   }
