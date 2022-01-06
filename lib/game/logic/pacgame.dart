@@ -12,7 +12,6 @@ class PacGame {
   Direction _direction = Direction.RIGHT;
   bool gameRunning = true;
   int numberOfGhosts = 0;
-
   PacGame({required this.player});
 
   setDirection(Direction direction) {

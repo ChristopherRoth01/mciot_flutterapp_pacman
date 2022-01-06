@@ -35,7 +35,7 @@ class EntryScreen extends StatelessWidget {
             Expanded(
               child: TextButton(
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) {
                       return const Game();

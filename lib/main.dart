@@ -27,7 +27,7 @@ void main() {
               fontFamily: 'Crack Man',
             ),
             bodyText1: TextStyle(
-              color: Colors.white,
+              color: Colors.yellow,
               fontSize: 20,
             ),
             bodyText2: TextStyle(

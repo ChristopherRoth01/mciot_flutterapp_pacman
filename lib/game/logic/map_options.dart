@@ -95,7 +95,7 @@ class MapOptions {
   List<Position> barriers;
   int crossAxisCount = 0;
   int mainAxisCount = 0;
-  Food food = new Food();
+  Food food = Food();
   final Map<Position, Food> _food = {};
   final Map<Position, Barrier> _barrier = {};
 
@@ -116,7 +116,9 @@ class MapOptions {
       }
     }
   }
-
+  int getFoodNumber() {
+    return _food.keys.length;
+  }
   bool positionExistsAndMoveable(Position pos) {
     return _food.keys.contains(pos);
   }
