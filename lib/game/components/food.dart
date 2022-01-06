@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 
-class Food extends StatefulWidget {
-  const Food ({Key? key}) : super(key: key);
+class Food extends StatelessWidget {
+  bool _isEaten = false;
 
-  @override
-  _StateFood createState() => _StateFood();
-}
+  void eat() {
+    _isEaten = true;
+  }
+  bool isEaten() {
+    return _isEaten;
+  }
 
-class _StateFood extends State<Food> {
-  bool isEaten = false;
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(13.0),
-      child: Image(image: AssetImage(
-        "assets/images/food.png"
-      ),
+    return Visibility(
+      visible: !_isEaten,
+      child: const Padding(
+        padding: EdgeInsets.all(13.0),
+        child: Image(
+          image: AssetImage("assets/images/food.png"),
+        ),
       ),
     );
   }
 }
+
+

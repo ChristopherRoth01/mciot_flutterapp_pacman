@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class Barrier extends StatelessWidget {
   const Barrier({Key? key}) : super(key: key);
 

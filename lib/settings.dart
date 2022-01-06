@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:mciot_flutterapp_pacman/game/logic/map_options.dart';
 
 import 'constants.dart';
 
 class Settings extends StatelessWidget {
+  static MapOptions currentlySelectedMap = MapOptions.smallMap_options;
   const Settings({Key? key}) : super(key: key);
 
   @override

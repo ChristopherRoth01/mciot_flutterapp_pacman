@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mciot_flutterapp_pacman/constants.dart';
 import 'package:mciot_flutterapp_pacman/settings.dart';
-import 'game/game.dart';
+import 'game/widgets/game.dart';
 import 'help.dart';
 
 class EntryScreen extends StatelessWidget {

@@ -15,19 +15,10 @@ class _ScoreState extends State<Score> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          child: Text("Score :", style: TextStyle(
-            color: Colors.yellow,
-            fontFamily: 'Pac Man',
-            fontSize: 40,
-          ),),
-        ),
+          child: Text("Score :", style: Theme.of(context).textTheme.headline3)),
+
         Expanded(
-          child: Text("HighScore:",style: TextStyle(
-            color: Colors.yellow,
-            fontFamily: 'Pac Man',
-            fontSize: 40,
-          ),),
-        ),
+          child: Text("HighScore:",style: Theme.of(context).textTheme.headline3)),
       ],
     );
   }

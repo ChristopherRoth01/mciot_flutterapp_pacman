@@ -17,7 +17,7 @@ class Direction {
     } else if(direction == "down") {
       _angle = pi/2;
     } else if(direction == "up") {
-      _angle = -pi/2;
+      _angle = pi/2 + pi;
     }
   }
 
