@@ -11,6 +11,7 @@ class Position {
   String toString(){
     return "x: " + x.toString() + "   " + "y: " + y.toString();
   }
+
   @override
   bool operator ==(Object other) =>
       other is Position && x == other.x && y == other.y;

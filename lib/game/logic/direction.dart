@@ -1,4 +1,5 @@
 import "dart:math" show pi;
+import 'dart:math';
 
 class Direction {
   static Direction LEFT = Direction("left");
@@ -23,6 +24,20 @@ class Direction {
 
   getAngle() {
     return _angle;
+  }
+
+  static Direction getRandomDirection() {
+    int rand = Random().nextInt(4);
+    if(rand == 0) {
+      return Direction.RIGHT;
+    } else if(rand == 1) {
+      return Direction.LEFT;
+    } else if(rand == 2) {
+      return Direction.DOWN;
+    } else {
+      return Direction.UP;
+    }
+
   }
 
 

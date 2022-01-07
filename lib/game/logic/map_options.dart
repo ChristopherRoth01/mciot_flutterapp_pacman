@@ -91,7 +91,7 @@ class MapOptions {
     Position(x: 7, y: 9),
   ];
   static MapOptions smallMap_options = MapOptions(11, 15, smallMapBarrier);
-
+  //static MapOptions mediumMap_options = MapOptions(26, 32, []);
   List<Position> barriers;
   int crossAxisCount = 0;
   int mainAxisCount = 0;

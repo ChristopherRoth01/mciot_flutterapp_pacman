@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mciot_flutterapp_pacman/game/components/ghost.dart';
 import 'package:mciot_flutterapp_pacman/game/end_screen.dart';
+import 'package:mciot_flutterapp_pacman/game/logic/ghosts.dart';
 import 'package:mciot_flutterapp_pacman/game/logic/player.dart';
 import 'package:mciot_flutterapp_pacman/game/logic/map_options.dart';
 import 'package:mciot_flutterapp_pacman/game/logic/position.dart';
@@ -11,20 +13,24 @@ import '../logic/direction.dart';
 
 class PacMap extends StatefulWidget {
   PacMap({Key? key}) : super(key: key);
-  MapOptions options = MapOptions.smallMap_options;
   @override
   _MapState createState() => _MapState();
 }
 
 class _MapState extends State<PacMap> {
-  Player player = Player(pos: Position(x: 5, y: 5));
-  Map<Position, Ghost> ghosts = {Position(x: 1, y: 1): Ghost()};
+  Player player = Player(Position(x: 5, y: 5));
+  List<GhostModel> ghostStartingPositions = [GhostModel(Position(x: 9, y:1)), GhostModel(Position(x: 1, y:13)),GhostModel(Position(x:9 , y:13)) ];
   Direction _direction = Direction.RIGHT;
-  bool gameRunning = true;
+  bool gameRunning = false;
   int score = 0;
   bool _pacVisible = false;
   final Map<int, bool> _visible = {};
 
+  void checkForGhostCollision() {
+    if(ghostHasPosition(player.pos)) {
+      end();
+    }
+  }
   void checkForEatableFood() {
     if (_visible[player.pos.y * Settings.currentlySelectedMap.crossAxisCount +
             player.pos.x] ==
@@ -38,21 +44,20 @@ class _MapState extends State<PacMap> {
   }
 
   void start() {
+    gameRunning = true;
     setFoodVisible();
     Timer.periodic(const Duration(milliseconds: 150), (timer) {
       if (!gameRunning) {
         timer.cancel();
       }
       setState(() {
-        if (_direction == Direction.RIGHT) {
-          player.moveRight();
-        } else if (_direction == Direction.LEFT) {
-          player.moveLeft();
-        } else if (_direction == Direction.DOWN) {
-          player.moveDown();
-        } else if (_direction == Direction.UP) {
-          player.moveUp();
+        for (var element in ghostStartingPositions) {
+          element.move(Direction.getRandomDirection());
         }
+        checkForGhostCollision();
+      });
+
+        player.move(_direction);
         checkForEatableFood();
         if (score == Settings.currentlySelectedMap.getFoodNumber()) {
           timer.cancel();
@@ -64,10 +69,6 @@ class _MapState extends State<PacMap> {
           );
         }
       });
-    });
-    if (score == Settings.currentlySelectedMap.getFoodNumber()) {
-      goToEndScreen(true);
-    }
   }
 
   void end() {
@@ -115,11 +116,11 @@ class _MapState extends State<PacMap> {
             },
             child: GridView.count(
               physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: widget.options.crossAxisCount,
+              crossAxisCount: Settings.currentlySelectedMap.crossAxisCount,
               children: List<Widget>.generate(
-                widget.options.crossAxisCount * widget.options.mainAxisCount,
+                Settings.currentlySelectedMap.crossAxisCount * Settings.currentlySelectedMap.mainAxisCount,
                 (index) {
-                  if (player.pos.y * widget.options.crossAxisCount +
+                  if (player.pos.y * Settings.currentlySelectedMap.crossAxisCount +
                           player.pos.x ==
                       index) {
                     return Visibility(
@@ -127,18 +128,16 @@ class _MapState extends State<PacMap> {
                         child: Transform.rotate(
                           angle: _direction.getAngle(),
                           child: player.getWidget(),
-                        ));
-                  } else if (ghosts.keys.first.y *
-                              widget.options.crossAxisCount +
-                          ghosts.keys.first.x ==
-                      index) {
+                        ),
+                    );
+                  } else if (ghostHasPosition(Position(x: index % Settings.currentlySelectedMap.crossAxisCount, y: (index /Settings.currentlySelectedMap.crossAxisCount).floor()))) {
                     return Visibility(
                         child: Ghost(),
                     visible: _pacVisible,);
                   }
                   return Visibility(
                     visible: _visible[index] ?? false,
-                    child: widget.options.getElementWithIndex(index),
+                    child: Settings.currentlySelectedMap.getElementWithIndex(index),
                   );
                 },
               ),
@@ -149,20 +148,23 @@ class _MapState extends State<PacMap> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Center(
-                child: TextButton(
-                  onPressed: start,
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        "Start",
-                        style: Theme.of(context).textTheme.bodyText1,
+              Visibility(
+                visible: !gameRunning,
+                child: Center(
+                  child: TextButton(
+                    onPressed: start,
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Text(
+                          "Start",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
                       ),
-                    ),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.yellow, width: 4),
-                      borderRadius: BorderRadius.circular(10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.yellow, width: 4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ),
@@ -206,5 +208,14 @@ class _MapState extends State<PacMap> {
         i++) {
       _visible[i] = true;
     }
+  }
+
+  bool ghostHasPosition(Position position) {
+    for(GhostModel ghost in ghostStartingPositions) {
+      if(ghost.pos == position) {
+        return true;
+      }
+    }
+    return false;
   }
 }

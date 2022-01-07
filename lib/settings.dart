@@ -5,6 +5,7 @@ import 'constants.dart';
 
 class Settings extends StatelessWidget {
   static MapOptions currentlySelectedMap = MapOptions.smallMap_options;
+  static int numberOfGhosts = 4;
   const Settings({Key? key}) : super(key: key);
 
   @override
@@ -44,10 +45,45 @@ class SettingsPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
+                flex: 1,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(10, 50, 0, 0),
                   child: Text(
-                      "Settings", style: Theme.of(context).textTheme.headline3,),
+                    "Settings",
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 7,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex:1,
+                            child: Text(
+                              "Map:",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: DropdownButton(
+                          items: <MapOptions>[MapOptions.smallMap_options].map((MapOptions value) {
+                                return DropdownMenuItem<MapOptions>(
+                                value: value,
+                                child: Text(value.toString(), style: Theme.of(context).textTheme.bodyText2,),
+                                );
+                                }).toList(),
+                                onChanged: (_) {},
+
+                          ),
+
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               Row(
