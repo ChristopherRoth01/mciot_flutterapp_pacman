@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mciot_flutterapp_pacman/entry_screen.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 void main() {
   runApp(MaterialApp(
