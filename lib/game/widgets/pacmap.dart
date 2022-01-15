@@ -47,6 +47,7 @@ class _MapState extends State<PacMap> {
 
   void start() {
     bluetoothConnection.connect();
+
     gameRunning = true;
     setFoodVisible();
     Timer.periodic(const Duration(milliseconds: 150), (timer) {
@@ -91,6 +92,17 @@ class _MapState extends State<PacMap> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      children: [
+        Expanded(child: Text("X: " + bluetoothConnection.getAccX())),
+        Expanded(child: Text("Y: " + bluetoothConnection.getAccY())),
+        Expanded(child: Text("Z: " + bluetoothConnection.getAccZ())),
+      ],
+    );
+
+
+
+
+    /*Column(
       children: [
         Expanded(
           flex: 7,
@@ -221,4 +233,5 @@ class _MapState extends State<PacMap> {
     }
     return false;
   }
+  */
 }

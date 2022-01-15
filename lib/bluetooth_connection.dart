@@ -13,6 +13,15 @@ class BluetoothConnection {
 
   bool earConnectFound = false;
 
+  String getAccX() {
+    return _accX;
+  }
+  String getAccY() {
+    return _accY;
+  }String getAccZ() {
+    return _accZ;
+  }
+
   void connect() {
     FlutterBlue flutterBlue = FlutterBlue.instance;
     // start scanning
