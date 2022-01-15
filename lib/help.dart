@@ -22,7 +22,7 @@ class Help extends StatelessWidget {
               size: 50,
             ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -70,6 +70,9 @@ class HelpScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {  },
       ),
     );
   }

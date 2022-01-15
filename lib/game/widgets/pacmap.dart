@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:mciot_flutterapp_pacman/bluetooth_connection.dart';
 import 'package:mciot_flutterapp_pacman/game/components/ghost.dart';
 import 'package:mciot_flutterapp_pacman/game/end_screen.dart';
 import 'package:mciot_flutterapp_pacman/game/logic/ghosts.dart';
@@ -18,6 +19,7 @@ class PacMap extends StatefulWidget {
 }
 
 class _MapState extends State<PacMap> {
+  BluetoothConnection bluetoothConnection = BluetoothConnection();
   Player player = Player(Position(x: 5, y: 5));
   List<GhostModel> ghostStartingPositions = [GhostModel(Position(x: 9, y:1)), GhostModel(Position(x: 1, y:13)),GhostModel(Position(x:9 , y:13)) ];
   Direction _direction = Direction.RIGHT;
@@ -44,6 +46,7 @@ class _MapState extends State<PacMap> {
   }
 
   void start() {
+    bluetoothConnection.connect();
     gameRunning = true;
     setFoodVisible();
     Timer.periodic(const Duration(milliseconds: 150), (timer) {
