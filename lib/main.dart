@@ -10,7 +10,8 @@ void main() {
         colorScheme:
         const ColorScheme.light(
             primary: Color(0xFF0A0E21),
-            secondary: Colors.purple),
+            secondary: Colors.yellow,
+        ),
         scaffoldBackgroundColor: const Color(0xFF0A0E21),
         textTheme: const TextTheme (
             headline1: TextStyle(
@@ -35,7 +36,9 @@ void main() {
               fontWeight: FontWeight.w200,
             ),
             bodyText2: TextStyle(
-              color: Colors.white,
+              color: Colors.yellow,
+              fontWeight: FontWeight.w400,
+              fontSize: 20,
             ),
           caption: TextStyle(
             color: Colors.white,

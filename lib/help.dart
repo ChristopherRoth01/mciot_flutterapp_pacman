@@ -35,25 +35,30 @@ class HelpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(3),
-          border: Border.all(
-            color: Colors.yellow,
-            width: 5,
-          ),
-        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 50, 0, 0),
+                padding: EdgeInsets.fromLTRB(20, 50, 0, 0),
                 child: Text(
                   "Help",
                   style: Theme.of(context).textTheme.headline3,
                 ),
               ),
             ),
+            const Expanded(
+              flex: 4,
+                child: Padding(
+                padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                    child: Text("Welcome to PacMan - The Earable Version. "
+                        "Basically this is PacMan, but you can control your PacMan with the help of "
+                        "earables, in this special case, the cosinuss one. \n Before you start playing, "
+                        "make sure to connect your earables in the Settings page. You can find it through clicking "
+                        "on the icon in the left upper corner of the starting screen.",),
+                ),
+              ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -70,9 +75,6 @@ class HelpScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {  },
       ),
     );
   }

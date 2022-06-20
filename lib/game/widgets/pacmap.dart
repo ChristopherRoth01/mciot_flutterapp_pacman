@@ -19,7 +19,8 @@ class PacMap extends StatefulWidget {
 class _MapState extends State<PacMap> {
   BluetoothConnection bluetoothConnection = BluetoothConnection();
   Player player = Player(Position(x: 5, y: 5));
-  List<GhostModel> ghostStartingPositions = [GhostModel(Position(x: 9, y:1)), GhostModel(Position(x: 1, y:13)),GhostModel(Position(x:9 , y:13)) ];
+  List<GhostModel> ghostStartingPositions = [GhostModel(Position(x: 9, y:1)),];
+  // GhostModel(Position(x: 1, y:13)),GhostModel(Position(x:9 , y:13))
   Direction _direction = Direction.RIGHT;
   bool gameRunning = false;
   int score = 0;
@@ -47,17 +48,21 @@ class _MapState extends State<PacMap> {
   }
   void startListening() {
     Timer.periodic(const Duration(milliseconds: 150), (timer) {
+      if(!gameRunning) {
+        timer.cancel();
+      }
       setState(() {
-        directionX = bluetoothConnection.getAccX(bluetoothConnection.binning);
-        directionY = bluetoothConnection.getAccY(bluetoothConnection.binning);
-        directionZ = bluetoothConnection.getAccZ(bluetoothConnection.binning);
+        _direction = Settings.connection.getDirection();
+        print(_direction.direction);
+         directionX = Settings.connection.getAccX(Settings.connection.binning);
+         directionY = Settings.connection.getAccY(Settings.connection.binning);
+         directionZ = Settings.connection.getAccZ(Settings.connection.binning);
       });
     });
 
   }
   void start() {
-    bluetoothConnection.connect();
-
+    startListening();
     gameRunning = true;
     setFoodVisible();
     Timer.periodic(const Duration(milliseconds: 150), (timer) {
@@ -102,8 +107,7 @@ class _MapState extends State<PacMap> {
   void setFoodVisible() {
     _pacVisible = true;
     for (int i = 0;
-    i <
-        Settings.currentlySelectedMap.crossAxisCount *
+    i < Settings.currentlySelectedMap.crossAxisCount *
             Settings.currentlySelectedMap.mainAxisCount;
     i++) {
       _visible[i] = true;
@@ -120,10 +124,14 @@ class _MapState extends State<PacMap> {
   }
   @override
   Widget build(BuildContext context) {
-    bool testing = true; //TODO: remove when not needed anymore
+    bool testing = false; //TODO: remove when not needed anymore
     if (testing) {
       return Column(
         children: [
+
+          Expanded(child: Text("X: " + directionX.toString())),
+          Expanded(child: Text("Y: " + directionY.toString())),
+          Expanded(child: Text("Z: " + directionZ.toString())),
           TextButton(onPressed: startListening, child: Container(
             height: 50,
             width: 100,
@@ -132,9 +140,6 @@ class _MapState extends State<PacMap> {
             ),
             child: Text("Start"),
           )),
-          Expanded(child: Text("X: " + directionX.toString())),
-          Expanded(child: Text("Y: " + directionY.toString())),
-          Expanded(child: Text("Z: " + directionZ.toString())),
         ],
       );
     } else {

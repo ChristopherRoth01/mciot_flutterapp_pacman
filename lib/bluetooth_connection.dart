@@ -1,9 +1,16 @@
-
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:mciot_flutterapp_pacman/game/logic/direction.dart';
+
+///Movement UP -> X Variable increases
+///Movement Down -> X Variable decreases
+///Movement left -> Z Variable
+///Movement right -> Z Variable
 
 class BluetoothConnection {
+  int acc_x = 0;
+  int acc_y = 0;
+  int acc_z = 0;
   /**
    * Binning => bin 5 points together and get their mean to reduce noise,
    */
@@ -11,15 +18,12 @@ class BluetoothConnection {
   List<int> accYValues = [];
   List<int> accZValues = [];
   String _connectionStatus = "Disconnected";
-  int binning = 5;
-  bool _isConnected = false;
+  int binning = 2;
+  bool isConnected = false;
   bool earConnectFound = false;
-
-  BluetoothConnection() {
-    connect();
-  }
-
+  
   double getAccX(int binningsize) {
+    return acc_x + 0.0;
     int sum = 0;
     if(accXValues.length < binningsize) {
       return 0;
@@ -31,6 +35,7 @@ class BluetoothConnection {
   }
 
   double getAccY(int binningsize) {
+    return acc_y+0.0;
     int sum = 0;
     if(accYValues.length < binningsize) {
       return 0;
@@ -42,6 +47,7 @@ class BluetoothConnection {
   }
 
   double getAccZ(int binningsize) {
+    return acc_z +0.0;
     int sum = 0;
     if(accZValues.length < binningsize) {
       return 0;
@@ -56,22 +62,20 @@ class BluetoothConnection {
     FlutterBlue flutterBlue = FlutterBlue.instance;
     // start scanning
     flutterBlue.startScan(timeout: Duration(seconds: 4));
-
     // listen to scan results
     var subscription = flutterBlue.scanResults.listen((results) async {
-
       // do something with scan results
       for (ScanResult r in results) {
         if (r.device.name == "earconnect" && !earConnectFound) {
           earConnectFound = true; // avoid multiple connects attempts to same device
           await flutterBlue.stopScan();
           r.device.state.listen((state) { // listen for connection state changes
-            _isConnected = state == BluetoothDeviceState.connected;
-            _connectionStatus = (_isConnected) ? "Connected" : "Disconnected";
-
+            isConnected = state == BluetoothDeviceState.connected;
+            _connectionStatus = (isConnected) ? "Connected" : "Disconnected";
           });
           await r.device.connect();
 
+          //Service Discovery
           var services = await r.device.discoverServices();
 
           for (var service in services) { // iterate over services
@@ -83,7 +87,6 @@ class BluetoothConnection {
                   await Future.delayed(Duration(seconds: 2)); // short delay before next bluetooth operation otherwise BLE crashes
                   characteristic.value.listen((rawData) => {
                     updateAccelerometer(rawData),
-
                   });
                   await characteristic.setNotifyValue(true);
                   await Future.delayed(Duration(seconds: 2));
@@ -99,19 +102,29 @@ class BluetoothConnection {
   void updateAccelerometer(rawData) {
     Int8List bytes = Int8List.fromList(rawData);
     // description based on placing the earable into your right ear canal
-    int acc_x = bytes[14];
-    int acc_y = bytes[16];
-    int acc_z = bytes[18];
+    acc_x = bytes[14];
+    acc_y = bytes[16];
+    acc_z = bytes[18];
     accXValues.add(acc_x);
     accYValues.add(acc_y);
     accZValues.add(acc_z);
-    print(accXValues.length);
-    if(accXValues.length > binning) {
-      print(getAccX(binning));
-      print(getAccY(binning));
-      print(getAccZ(binning));
-    }
+    print("X: " + getAccX(binning).toString());
+    print("Y: " + getAccY(binning).toString());
+    print("Z: " + getAccZ(binning).toString());
+    print("_______________________________________________________");
+  }
 
+  Direction getDirection() {
+    if(getAccY(5) > 18) {
+      return Direction.UP;
+    } else if(getAccY(5) < 0) {
+      return Direction.DOWN;
+    } else if(getAccZ(5) < -10) {
+      return Direction.RIGHT;
+    } else if(getAccZ(5) > 10) {
+      return Direction.LEFT;
+    }
+    return Direction.ERROR;
   }
 
 }

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:mciot_flutterapp_pacman/constants.dart';
 import 'package:mciot_flutterapp_pacman/settings.dart';
@@ -7,6 +8,7 @@ import 'help.dart';
 class EntryScreen extends StatelessWidget {
   const EntryScreen({Key? key}) : super(key: key);
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,9 +16,17 @@ class EntryScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Expanded(
+              flex: 1,
+              child: SizedBox(
+
+              ),
+            ),
             Expanded(
+              flex: 6,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Settings(),
                   const Help(),
@@ -24,23 +34,51 @@ class EntryScreen extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 4,
-              child: Center(
-                child: Text(
-                  gameName_caps,
-                  style: Theme.of(context).textTheme.headline1,
-                ),
+              flex: 6,
+              child: Column(
+                children: [
+                  Center(
+                    child: Text(
+                      gameName_caps,
+                      style: Theme.of(context).textTheme.headline1,
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      "the Earable version",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                  )
+                ],
               ),
             ),
             Expanded(
+              flex: 3,
               child: TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return const Game();
-                    }),
-                  );
+                  if(Settings.connection.isConnected) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) {
+                        return const Game();
+                      }),
+                    );
+                  } else {
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Earable connection'),
+                        content: const Text('You need to connect your earables before playing! \n Visit the Settings Page!'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Dismiss'),
+                          ),
+
+                        ],
+                      ),
+                    );
+                  }
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
